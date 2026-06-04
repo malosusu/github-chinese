@@ -20,6 +20,8 @@ const DEFAULTS = {
   readme_qwen_mt_api_url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
   readme_qwen_mt_api_key: '',
   readme_qwen_mt_model: 'qwen-mt-turbo',
+  readme_deeplx_api_url: 'https://api.deeplx.org',
+  readme_deeplx_api_key: '',
 };
 
 const LOCAL_STORAGE_KEYS = {
@@ -321,6 +323,15 @@ function getProviderConfig(values) {
         return { ok: false, message: 'Azure 需要 API 地址、API Key 和 Region。' };
       }
       return { ok: true, provider, targetLang, url, key, region };
+    }
+    case 'deeplx': {
+      const baseUrl = normalizeUrl(values.readme_deeplx_api_url);
+      const deeplxKey = (values.readme_deeplx_api_key || '').trim();
+      const url = baseUrl.replace(/\/+$/, '') + '/' + encodeURIComponent(deeplxKey) + '/translate';
+      if (!baseUrl || !deeplxKey) {
+        return { ok: false, message: 'DeepLX 需要 API 地址和 API Key。' };
+      }
+      return { ok: true, provider, targetLang, url, key: deeplxKey };
     }
     case 'qwen_mt': {
       const url = normalizeOpenAiEndpoint(normalizeUrl(values.readme_qwen_mt_api_url));
@@ -689,6 +700,23 @@ async function testQwenMt(config) {
   }
 }
 
+async function testDeepLX(config) {
+  const data = await proxyFetchJson({
+    url: config.url,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      text: 'Hello, this is a connectivity test.',
+      source_lang: 'auto',
+      target_lang: 'ZH',
+    }),
+  });
+
+  if (data?.code !== 200 || !data?.data) {
+    throw new Error(`DeepLX 响应异常 (code: ${data?.code}): ${data?.data || '未知错误'}`);
+  }
+}
+
 async function testProviderConnection(values) {
   const config = getProviderConfig(values);
   if (!config.ok) {
@@ -705,6 +733,9 @@ async function testProviderConnection(values) {
     case 'azure':
       await testAzure(config);
       return 'Azure Translator 连通性正常。';
+    case 'deeplx':
+      await testDeepLX(config);
+      return 'DeepLX 连通性正常。';
     case 'qwen_mt':
       await testQwenMt(config);
       return 'Qwen-MT 连通性正常。';

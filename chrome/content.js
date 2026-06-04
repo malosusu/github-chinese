@@ -30,6 +30,8 @@
         readme_qwen_mt_api_url: 'https://dashscope.aliyuncs.com/compatible-mode/v1/chat/completions',
         readme_qwen_mt_api_key: '',
         readme_qwen_mt_model: 'qwen-mt-turbo',
+        readme_deeplx_api_url: 'https://api.deeplx.org',
+        readme_deeplx_api_key: '',
     };
 
     const FeatureSet = { ...STORAGE_DEFAULTS };
@@ -1866,6 +1868,24 @@
                 };
             }
 
+            case 'deeplx': {
+                const baseUrl = normalizeUrl(FeatureSet.readme_deeplx_api_url || FeatureSet.readme_deepl_api_url);
+                const key = (FeatureSet.readme_deeplx_api_key || '').trim();
+                const url = baseUrl.replace(/\/+$/, '') + '/' + encodeURIComponent(key) + '/translate';
+                if (!baseUrl || !key) {
+                    return { ok: false, message: 'DeepLX 需要 API 地址与 API Key。' };
+                }
+
+                return {
+                    ok: true,
+                    provider,
+                    targetLang,
+                    url,
+                    key,
+                    signature: `${provider}|${targetLang}|${url}|${createHash(key)}`,
+                };
+            }
+
             case 'qwen_mt': {
                 const rawUrl = normalizeUrl(FeatureSet.readme_qwen_mt_api_url);
                 const url = normalizeOpenAiEndpoint(rawUrl);
@@ -2028,6 +2048,8 @@
                 return translateWithGoogle(texts, providerConfig);
             case 'azure':
                 return translateWithAzure(texts, providerConfig);
+            case 'deeplx':
+                return translateWithDeepLX(texts, providerConfig);
             case 'qwen_mt':
                 return translateWithQwenMt(texts, providerConfig);
             case 'openai':
@@ -2063,6 +2085,32 @@
             translations: (data?.translations || []).map(item => (item?.text || '').trim()),
             tokens: 0,
         };
+    }
+
+    async function translateWithDeepLX(texts, providerConfig) {
+        const translations = [];
+        let tokens = 0;
+
+        for (const text of texts) {
+            const data = await proxyFetchJson({
+                url: providerConfig.url,
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    text,
+                    source_lang: 'auto',
+                    target_lang: mapTargetLangForDeepL(),
+                }),
+            });
+
+            if (data?.code === 200 && data?.data) {
+                translations.push(String(data.data).trim());
+            } else {
+                throw new Error(`DeepLX 翻译失败 (code: ${data?.code}): ${data?.data || '未知错误'}`);
+            }
+        }
+
+        return { translations, tokens };
     }
 
     async function translateWithGoogle(texts, providerConfig) {

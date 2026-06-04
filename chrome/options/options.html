@@ -116,6 +116,7 @@
               <option value="deepl">DeepL</option>
               <option value="google">Google Cloud Translation</option>
               <option value="azure">Microsoft Translator (Azure)</option>
+              <option value="deeplx">DeepLX</option>
               <option value="qwen_mt">Qwen-MT（机器翻译）</option>
               <option value="openai">OpenAI 官方接口</option>
               <option value="deepseek">DeepSeek</option>
@@ -180,6 +181,22 @@
             <label for="readme_azure_region">Region</label>
             <input id="readme_azure_region" type="text" placeholder="例如：eastasia">
             <p class="hint">必填，如 `eastasia`、`koreacentral` 等。</p>
+          </div>
+        </section>
+
+        <section class="card provider" data-provider="deeplx">
+          <div class="card-head">
+            <h2>DeepLX 配置</h2>
+          </div>
+          <div class="field">
+            <label for="readme_deeplx_api_url">API 地址</label>
+            <input id="readme_deeplx_api_url" type="url" placeholder="https://api.deeplx.org">
+            <p class="hint">DeepLX 服务基础地址，默认为 `api.deeplx.org`。自部署则填入你的地址（如 `http://127.0.0.1:1188`）。</p>
+          </div>
+          <div class="field">
+            <label for="readme_deeplx_api_key">API Key</label>
+            <input id="readme_deeplx_api_key" type="password" placeholder="DeepLX API Key">
+            <p class="hint">你的 DeepLX Key。插件会自动拼接为 `{base_url}/{key}/translate` 发起请求。</p>
           </div>
         </section>
 

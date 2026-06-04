@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="panel">
+    <h1>GitHub 中文汉化</h1>
+    <p class="feature-description">一键开启或关闭界面汉化</p>
+
+    <div class="power-wrap">
+      <input id="power-input" type="checkbox" class="power-input">
+      <label for="power-input" class="power-button" role="button" aria-label="开关汉化功能">
+        <span class="power-ring"></span>
+        <span class="power-line"></span>
+      </label>
+    </div>
+
+    <p id="status" class="status">加载中...</p>
+    <p class="usage-note">切换后若当前标签页为 GitHub 页面，将自动刷新</p>
+
+    <button id="options-btn" class="options-btn">⚙ README 翻译设置</button>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
