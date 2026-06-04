@@ -27,17 +27,12 @@
 - [📖 开源说明](#-开源说明)
 </details>
 
-<div align="center">
-
-### [👉 前往 Chrome 应用商店安装 👈](https://chromewebstore.google.com/detail/emoeojemgbjcogiodobkpeohoailphgg?utm_source=item-share-cb)
-
-</div>
-
 ## 🌟 功能特性
 
 - 覆盖 `github.com`、`gist.github.com`、`skills.github.com`、`education.github.com`、`www.githubstatus.com`
 - 使用内置词库与规则在本地执行界面翻译，无需依赖在线翻译服务
 - 支持仓库 README 英文内容翻译（可选）：可配置翻译平台 API 或 OpenAI 兼容接口
+- 支持 DeepLX 翻译服务（免费，可自部署）
 - 支持 Issue / Pull Request 对话内容翻译（可选）：可手动翻译单条正文或评论，并在原文、译文、双语视图间切换
 - 弹窗提供总开关；切换后若当前标签页为 GitHub 页面，将自动刷新并立即生效
 - 支持翻译记录、缓存复用与分段渐进翻译（可在设置中按需开启）；记录会标注来源为 README、Issue 或 Pull Request
@@ -47,21 +42,13 @@
 - 默认仅进行本地界面翻译
 - 仅本地保存插件配置（如开关状态、API 配置、缓存与记录）
 - 不收集、不出售用户个人数据
-- 当你主动开启 README 或 Issue / Pull Request 对话翻译时，仅会将待翻译内容发送到你所配置的翻译服务
+- 当你主动开启 README、Issue / Pull Request 对话翻译或 DeepLX 时，仅会将待翻译内容发送到你所配置的翻译服务
 
 ## 💻 安装指南
 
-### Chrome 应用商店安装（推荐）
-
-[**前往 Chrome 应用商店安装**](https://chromewebstore.google.com/detail/emoeojemgbjcogiodobkpeohoailphgg?utm_source=item-share-cb)
-
-1. 点击上方链接进入 Chrome 应用商店
-1. 点击 `添加至 Chrome`，并确认安装
-1. 安装后可在 `chrome://extensions/` 中确认扩展已启用（建议固定到工具栏）
-1. 打开任意 GitHub 页面即可自动中文化；如未立即生效，请刷新页面或重启浏览器
-
 ### 开发者模式加载
 
+1. 克隆本仓库到本地
 1. 打开 `chrome://extensions/`
 1. 开启右上角 `开发者模式`
 1. 点击 `加载已解压的扩展程序`，选择本仓库的 `chrome` 目录（包含 `manifest.json`）
@@ -90,52 +77,7 @@
 1. 补充扩展图标（assets/icons）
 1. 修复因缺失 background.js / popup.html / 图标导致的扩展加载失败问题
 
-### v2.2.4 (2026-05-26)
-
-1. 新增 Issue / Pull Request 对话翻译，可手动翻译正文与单条评论
-1. 支持原文、译文、双语三种视图切换
-1. 复用 README 翻译的分段渐进翻译、缓存复用与翻译记录能力
-1. 翻译记录新增来源标签，区分 README、Issue 与 Pull Request
-1. 优化翻译按钮位置与 GitHub 绿色按钮样式
-1. 修复插件上下文失效时的错误提示与重试状态
-
-### v2.2.3 (2026-05-26)
-
-1. 同步上游词条并补回 Chrome 插件本地补充词条
-1. 清理重复翻译词条，减少词库冗余
-1. 优化 README 翻译设置页结构与交互文案
-1. 改进翻译记录、缓存与高级功能开关的设置体验
-
-### v2.2.2 (2026-05-26)
-
-1. README 翻译支持多厂商 AI 翻译接口
-1. 新增 OpenAI 兼容接口配置，支持自定义 API 地址与模型
-1. 增加 Qwen MT、DeepL、Google、Azure 等翻译服务配置入口
-1. 优化 API 权限申请与连通性配置流程
-
-### v2.2.1 (2026-05-05)
-
-1. 同步 Chrome 插件上游词条
-1. 增加页面文本翻译缓存，减少重复匹配与替换开销
-1. 更新版本号并修正弹窗版本测试
-
-### v2.2.0 (2026-04-07)
-
-1. 同步上游新增词条（约 25 条）
-1. 修正多处翻译一致性
-1. 新增 Copilot 学生帐户、模型原生搜索、新版 PR 仪表板等词条
-1. 修复 tooltip 悬浮翻译缺失
-
-### v2.1.2 (2026-04-02)
-
-1. 翻译 copilot/agents 试用按钮与能力链接
-1. 修复 agents 页面分段漏翻与 trial 混排
-
-### v2.0.0 (2026-03-11)
-
-1. Chrome 扩展首个正式版本发布
-1. 收敛主机权限并改为 API 域名按需授权
-1. 完善 README 翻译体验并固定简体中文
+> 本仓库复刻自 [MaydayV/github-chinese](https://github.com/MaydayV/github-chinese)，上游词库基于 [maboloshi/github-chinese](https://github.com/maboloshi/github-chinese)。早期版本更新日志请查看上游仓库。
 
 <div align="right">
 
@@ -147,7 +89,7 @@
 
 本扩展为社区项目，非 GitHub 官方产品。
 
-词条基于 [maboloshi/github-chinese](https://github.com/maboloshi/github-chinese) 项目，该项目由 [52cik](https://github.com/52cik) 创建，[maboloshi](https://github.com/maboloshi) 等社区成员持续维护，以 GPL-3.0 许可证开源。
+本仓库复刻自 [MaydayV/github-chinese](https://github.com/MaydayV/github-chinese)，词条基于 [maboloshi/github-chinese](https://github.com/maboloshi/github-chinese) 项目。该项目由 [52cik](https://github.com/52cik) 创建，[maboloshi](https://github.com/maboloshi) 等社区成员持续维护，以 GPL-3.0 许可证开源。
 
 如果你希望继续修改或完善，欢迎通过以下方式参与：
 
@@ -174,4 +116,4 @@
 [github-forks-link]: https://github.com/malosusu/github-chinese/network "复刻"
 [github-forks-shield]: https://img.shields.io/github/forks/malosusu/github-chinese?style=flat-square&logo=github&label=Fork
 [github-license-link]: https://opensource.org/licenses/GPL-3.0  "许可证"
-[github-license-shield]: https://img.shields.io/github/license/MaydayV/github-chinese?style=flat-square&logo=github&label=License
+[github-license-shield]: https://img.shields.io/github/license/malosusu/github-chinese?style=flat-square&logo=github&label=License
