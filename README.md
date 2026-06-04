@@ -82,6 +82,14 @@
 
 ## 🔄 更新日志
 
+### v2.3.0 (2026-06-04)
+
+1. 新增 DeepLX 翻译服务支持
+1. 新增背景服务脚本（service worker），支持 HTTP 代理请求
+1. 新增扩展弹窗，提供总开关与快速跳转设置页
+1. 补充扩展图标（assets/icons）
+1. 修复因缺失 background.js / popup.html / 图标导致的扩展加载失败问题
+
 ### v2.2.4 (2026-05-26)
 
 1. 新增 Issue / Pull Request 对话翻译，可手动翻译正文与单条评论
@@ -158,12 +166,12 @@
 <!-- LINK GROUP -->
 
 [back-to-top]: https://img.shields.io/badge/-BACK_TO_TOP-151515?style=flat-square
-[github-project-link]: https://github.com/MaydayV/github-chinese "GitHub 中文汉化插件"
-[github-issues-link]: https://github.com/MaydayV/github-chinese/issues "议题"
-[github-issues-shield]: https://img.shields.io/github/issues/MaydayV/github-chinese?style=flat-square&logo=github&label=Issue
-[github-stars-link]: https://github.com/MaydayV/github-chinese/stargazers "星标"
-[github-stars-shield]: https://img.shields.io/github/stars/MaydayV/github-chinese?style=flat-square&logo=github&label=Star
-[github-forks-link]: https://github.com/MaydayV/github-chinese/network "复刻"
-[github-forks-shield]: https://img.shields.io/github/forks/MaydayV/github-chinese?style=flat-square&logo=github&label=Fork
+[github-project-link]: https://github.com/malosusu/github-chinese "GitHub 中文汉化插件"
+[github-issues-link]: https://github.com/malosusu/github-chinese/issues "议题"
+[github-issues-shield]: https://img.shields.io/github/issues/malosusu/github-chinese?style=flat-square&logo=github&label=Issue
+[github-stars-link]: https://github.com/malosusu/github-chinese/stargazers "星标"
+[github-stars-shield]: https://img.shields.io/github/stars/malosusu/github-chinese?style=flat-square&logo=github&label=Star
+[github-forks-link]: https://github.com/malosusu/github-chinese/network "复刻"
+[github-forks-shield]: https://img.shields.io/github/forks/malosusu/github-chinese?style=flat-square&logo=github&label=Fork
 [github-license-link]: https://opensource.org/licenses/GPL-3.0  "许可证"
 [github-license-shield]: https://img.shields.io/github/license/MaydayV/github-chinese?style=flat-square&logo=github&label=License
