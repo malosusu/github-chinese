@@ -826,19 +826,21 @@ function getRecordSourceMeta(sourceType) {
 function normalizeRecords(records) {
   const list = Array.isArray(records) ? records : [];
 
-  return list
-    .filter((item) => item && typeof item === 'object')
-    .map((item) => ({
-      id: String(item.id || ''),
-      repo: String(item.repo || 'unknown/unknown'),
-      sourceType: normalizeRecordSourceType(item.sourceType),
-      status: String(item.status || 'success'),
-      tokens: Math.max(0, Number(item.tokens) || 0),
-      provider: String(item.provider || ''),
-      createdAt: Number(item.createdAt || 0),
-      detail: String(item.detail || ''),
-    }))
-    .sort((a, b) => b.createdAt - a.createdAt);
+    return list
+      .filter((item) => item && typeof item === 'object')
+      .map((item) => ({
+        id: String(item.id || ''),
+        repo: String(item.repo || 'unknown/unknown'),
+        sourceType: normalizeRecordSourceType(item.sourceType),
+        status: String(item.status || 'success'),
+        tokens: Math.max(0, Number(item.tokens) || 0),
+        provider: String(item.provider || ''),
+        createdAt: Number(item.createdAt || 0),
+        durationMs: Math.max(0, Number(item.durationMs) || 0),
+        sourceHash: String(item.sourceHash || ''),
+        detail: String(item.detail || ''),
+      }))
+      .sort((a, b) => b.createdAt - a.createdAt);
 }
 
 function normalizeCacheEntries(cacheEntries) {

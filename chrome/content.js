@@ -137,6 +137,7 @@
         stateByElement: new WeakMap(),
         isApplyingTranslation: false,
         translationCache: new Map(),
+        translationCacheMaxSize: 500,
         repoCacheMap: new Map(),
         repoCacheLoaded: false,
         lastWarnKey: '',
@@ -166,8 +167,12 @@
     });
 
     async function loadFeatureSet() {
-        const result = await chrome.storage.sync.get(STORAGE_DEFAULTS);
-        Object.assign(FeatureSet, result);
+        try {
+            const result = await chrome.storage.sync.get(STORAGE_DEFAULTS);
+            Object.assign(FeatureSet, result);
+        } catch (error) {
+            console.warn('[GitHub 中文] 读取设置失败，使用默认配置:', error);
+        }
     }
 
     function refreshCurrentPageTranslations() {
@@ -197,6 +202,7 @@
             default:
                 if (isReadmeSettingKey(key)) {
                     readmeRuntime.translationCache.clear();
+                    readmeRuntime.translationCacheMaxSize = 500;
                     if (key === 'readme_enable_repo_cache' && !newFeatureState) {
                         readmeRuntime.repoCacheMap.clear();
                         readmeRuntime.repoCacheLoaded = false;
@@ -354,7 +360,7 @@
         if (!FeatureSet.enable_extension) return;
 
         const handleTextNode = node => {
-            if (node.length > 500) return;
+            if (node.data.length > 500) return;
             transElement(node, 'data');
         }
 
@@ -400,8 +406,9 @@
                     transElement(node.dataset, 'confirm'); // 翻译 浏览器 提示对话框 ok
                     transElement(node.dataset, 'confirmText'); // 翻译 浏览器 提示对话框 ok
                     transElement(node.dataset, 'confirmCancelText'); // 取消按钮 提醒
-                    transElement(node, 'cancelConfirmText'); // 取消按钮 提醒
+                    transElement(node.dataset, 'cancelConfirmText'); // 取消按钮 提醒
                     transElement(node.dataset, 'disableWith'); // 按钮等待提示
+                    break;
 
                 case 'A':
                 case 'SPAN':
@@ -1974,6 +1981,12 @@
                 readmeRuntime.translationCache.set(cacheKey, fallback);
                 translatedMap.set(text, fallback);
             });
+
+            if (readmeRuntime.translationCache.size > readmeRuntime.translationCacheMaxSize) {
+                const keys = [...readmeRuntime.translationCache.keys()];
+                const toDelete = keys.slice(0, keys.length - readmeRuntime.translationCacheMaxSize);
+                toDelete.forEach((k) => readmeRuntime.translationCache.delete(k));
+            }
         }
 
         return {

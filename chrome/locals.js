@@ -5872,7 +5872,7 @@ I18N["zh-CN"]["settings/repositories"] = { // 设置 - 仓库
     ],
     "title": {
         "static": {
-            "Repositorys": "仓库",
+"Repositories": "仓库",
         },
     },
 };
